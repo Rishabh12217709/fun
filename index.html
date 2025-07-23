@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Am I Cute? 😂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #fff0f5;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      text-align: center;
+    }
+    .centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    h1 {
+      color: #d81b60;
+      font-size: 26px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      border: none;
+      color: white;
+      font-size: 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+    #yesBtn { background: #8e24aa; position: absolute; }
+    #noBtn { background: #f06292; }
+
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      animation: float 5s linear infinite;
+    }
+    @keyframes float {
+      0% { bottom: 0; opacity: 1; }
+      100% { bottom: 100vh; opacity: 0; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .final-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .final-content img.dp {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #d81b60;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin: 20px 0;
+    }
+
+    .final-content img.gif {
+      max-width: 90%;
+      height: auto;
+      margin: 20px 0;
+      border-radius: 12px;
+    }
+
+    .final-content a {
+      display: inline-block;
+      margin: 8px;
+      color: #d81b60;
+      text-decoration: none;
+      font-weight: bold;
+      word-break: break-word;
+    }
+    .final-content a:hover {
+      text-decoration: underline;
+    }
+
+    p { margin: 10px 0; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div class="centered" id="mainContent">
+    <h1 id="question">Do you think, You are cute? 😂</h1>
+    <button id="yesBtn">YES 😂</button>
+    <button id="noBtn">NO 😆</button>
+  </div>
+
+  <!-- Funny upbeat background music -->
+  <audio id="loveSong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"></audio>
+  <canvas id="confetti"></canvas>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const question = document.getElementById("question");
+    const loveSong = document.getElementById("loveSong");
+    const mainContent = document.getElementById("mainContent");
+
+    let noCount = 0;
+
+    yesBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight);
+      yesBtn.style.left = `${x}px`;
+      yesBtn.style.top = `${y}px`;
+    });
+
+    noBtn.addEventListener("click", () => {
+      playBeep();
+      noCount++;
+
+      if (noCount === 1) {
+        question.textContent = "Do you think you look cute when you pout? 😂";
+      } else if (noCount === 2) {
+        question.textContent = "Seriously? Everyone thinks You are cute! 🤣";
+      } else if (noCount === 3) {
+        question.textContent = "Haha! You act like cutie! 😝";
+      } else if (noCount === 4) {
+        question.textContent = "Last chance! You accept this, You are cute! 😂";
+      } else {
+        triggerSurprise();
+      }
+    });
+
+    setInterval(createEmoji, 500);
+    function createEmoji() {
+      const emoji = document.createElement("div");
+      emoji.className = "emoji";
+      emoji.textContent = "😂";
+      emoji.style.left = Math.random() * 100 + "vw";
+      document.body.appendChild(emoji);
+      setTimeout(() => { emoji.remove(); }, 5000);
+    }
+
+    function playBeep() {
+      const ctx = new AudioContext();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "square";
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(0);
+      g.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.3);
+    }
+
+    function triggerSurprise() {
+      loveSong.play();
+      startConfetti();
+      mainContent.innerHTML = `
+        <div class="final-content">
+          <h1>Too many NOs! Now you must say YES forever! 😂</h1>
+          <img class="gif" src="https://media.giphy.com/media/3orieRzV9BXTpspU3a/giphy.gif" alt="Love GIF">
+          <p>You are stuck with me! 😘</p>
+          <img class="dp" src="https://freeimghost.net/images/2025/07/23/g.jpg" alt="My DP">
+          <h3>Watch these too! 😂👇</h3>
+          <p>
+            <a href="https://youtube.com/shorts/IJtm0PgRIN0?si=RAQWnUTVcqssFbzC" target="_blank">Funny Surprise 1</a><br>
+            <a href="https://youtube.com/shorts/imZI0iVzSsg?si=uA1fPC6oMwG3FpE3" target="_blank">Funny Surprise 2</a><br>
+            <a href="https://youtube.com/shorts/qMfZFdRjnV4?si=U7RjSFYoaq0iV9sy" target="_blank">Funny Surprise 3</a>
+          </p>
+        </div>
+      `;
+    }
+
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let confettiPieces = [];
+
+    function startConfetti() {
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      for (let i = 0; i < 150; i++) {
+        confettiPieces.push(new ConfettiPiece());
+      }
+      requestAnimationFrame(updateConfetti);
+    }
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    class ConfettiPiece {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 8 + 2;
+        this.speed = Math.random() * 3 + 2;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.spin = Math.random() * 0.1 - 0.05;
+        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+      }
+      update() {
+        this.y += this.speed;
+        this.angle += this.spin;
+        if (this.y > canvas.height) {
+          this.y = -this.size;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    }
+    function updateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach(piece => {
+        piece.update();
+        piece.draw();
+      });
+      requestAnimationFrame(updateConfetti);
+    }
+  </script>
+</body>
+</html>
